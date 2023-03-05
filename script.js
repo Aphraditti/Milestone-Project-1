@@ -65,3 +65,41 @@ const _question = document.getElementById('question');
      `;
      selectOption();
  }
+ function selectOption(){
+    _options.querySelectorAll('li').forEach(function(option){
+        option.addEventListener('click', function(){
+            if(_options.querySelector('.selected')){
+                const activeOption = _options.querySelector('.selected');
+                activeOption.classList.remove('selected');
+            }
+            option.classList.add('selected');
+        });
+    });
+}
+
+function checkAnswer(){
+    _checkBtn.disabled = true;
+    const _correct = new Audio('correct.mp3');
+    const _wrong = new Audio('wrong.mp3');
+
+    if(_options.querySelector('.selected')){
+        let selectedAnswer = _options.querySelector('.selected span').textContent;
+        if(selectedAnswer == HTMLDecode(correctAnswer)){
+            correctScore++;
+            _result.innerHTML = `<p><i class = "fas fa-check"></i>Correct Answer!</p>`;
+            _correct.play();
+        } else {
+            _result.innerHTML = `<p><i class = "fas fa-times"></i>Incorrect Answer!</p> <small><b>Correct Answer: </b>${correctAnswer}</small>`;
+            _wrong.play();
+        }
+        checkCount();
+    } else {
+        _result.innerHTML = `<p><i class = "fas fa-question"></i>Please select an option!</p>`;
+        _checkBtn.disabled = false;
+    }
+}
+
+function HTMLDecode(textString) {
+    let doc = new DOMParser().parseFromString(textString, "text/html");
+    return doc.documentElement.textContent;
+}
