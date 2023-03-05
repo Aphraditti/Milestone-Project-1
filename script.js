@@ -103,3 +103,39 @@ function HTMLDecode(textString) {
     let doc = new DOMParser().parseFromString(textString, "text/html");
     return doc.documentElement.textContent;
 }
+function checkCount(){
+    askedCount++;
+    setCount();
+    if(askedCount == totalQuestion){
+        setTimeout(function(){
+            console.log("");
+        }, 5000);
+
+
+        _result.innerHTML += `<p>Your score is ${correctScore}.</p>`;
+        audio.pause();
+        _playAgainBtn.style.display = "block";
+        _checkBtn.style.display = "none";
+    } else {
+        setTimeout(function(){
+            loadQuestion();
+        }, 300);
+    }
+}
+
+function setCount(){
+    _totalQuestion.textContent = totalQuestion;
+    _correctScore.textContent = correctScore;
+}
+
+
+function restartTrivia(){
+    correctScore = askedCount = 0;
+    _playAgainBtn.style.display = "none";
+    _checkBtn.style.display = "block";
+    _checkBtn.disabled = false;
+    setCount();
+    loadQuestion();
+    audio.play();
+    onWindowLoad();
+}
